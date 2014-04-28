@@ -724,11 +724,15 @@ params = CGI.parse(uri.query || "")
     end
     error msg
   end
-  
+
   def generate_jekyll_site
     puts "~~~~~~~~~~~~~~~~~~~~~~~~~~"
     puts "~~~~~~~~~~~~~~~~~~~~~~~~~~"
     puts "   BUILDING Jekyll Site   "
+    puts "   - - - - - - - - - - -  "
+    pipe("export LC_ALL=en_US.UTF-8")
+    pipe("export LANG=en_US.UTF-8")
+    pipe("export LANGUAGE=en_US.UTF-8")
     puts "   - - - - - - - - - - -  "
     pipe("env PATH=$PATH bundle exec jekyll serve --port $PORT 2>&1")
     puts "~~~~~~~~~~~~~~~~~~~~~~~~~~"
