@@ -94,6 +94,7 @@ class LanguagePack::Ruby < LanguagePack::Base
         create_database_yml
         install_binaries
         run_assets_precompile_rake_task
+        generate_jekyll_site
       end
       super
     end
@@ -722,6 +723,21 @@ params = CGI.parse(uri.query || "")
       msg << "https://devcenter.heroku.com/articles/pre-provision-database\n"
     end
     error msg
+  end
+  
+  def generate_jekyll_site
+    puts "~~~~~~~~~~~~~~~~~~~~~~~~~~"
+    puts "~~~~~~~~~~~~~~~~~~~~~~~~~~"
+    puts "   BUILDING Jekyll Site   "
+    puts "   - - - - - - - - - - -  "
+    pipe("env PATH=$PATH bundle exec jekyll serve --port $PORT 2>&1")
+    puts "~~~~~~~~~~~~~~~~~~~~~~~~~~"
+    puts "~~~~~~~~~~~~~~~~~~~~~~~~~~"
+    unless $? == 0
+      puts "v^v^v^v^v^v^v^v^v^v^v^v^v^v^v^v^v^v^v^v^v^"
+      error "   FAILED to Generate Site with Jekyll."
+      puts "v^v^v^v^v^v^v^v^v^v^v^v^v^v^v^v^v^v^v^v^v^"
+    end
   end
 
   def bundler_cache
